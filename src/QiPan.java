@@ -2,14 +2,14 @@
  * Created by lkq on 2016/8/26.
  */
 public class QiPan {
-    final static int scale_row=15;
-    final static int scale_col=15;
-    static int luozi_x;
-    static int luozi_y;
+    final static private int scale_row=15;
+    final static private int scale_col=15;
+    static private int luozi_x;
+    static private int luozi_y;
     //static QiPan qiPan;
-    int rounds=0;
+    private int rounds=0;
     boolean iswin=false;
-    QiZi[][] qiZis=new QiZi[scale_col][scale_row];
+    private QiZi[][] qiZis=new QiZi[scale_col][scale_row];
 /*  private void QiPan(){
     }
 
@@ -45,7 +45,7 @@ public class QiPan {
                 if(qiZis[i][j]==null)
                     System.out.print(" * ");
                 else
-                    System.out.print(qiZis[i][j].getColor());
+                    System.out.print(" "+qiZis[i][j].getColor()+" ");
             }
             System.out.println("");
         }
@@ -59,43 +59,153 @@ public class QiPan {
     }
     //放置棋子
     public void luoZi(){
-        if(0<luozi_x&&luozi_x<16&&0<luozi_y&&luozi_y<16) {
-            QiZi qiZi = new QiZi(luozi_x-1, luozi_y-1);
+        if(-1<luozi_x&&luozi_x<15&&-1<luozi_y&&luozi_y<15) {
+            QiZi qiZi = new QiZi(luozi_x, luozi_y);
             if (rounds%2==0){
-                qiZi.setColor(qiZi.BLACK);
+                qiZi.setColor(QiZi.BLACK);
             }
             else {
-                qiZi.setColor(qiZi.WHITE);
+                qiZi.setColor(QiZi.WHITE);
             }
             qiZis[qiZi.getX()][qiZi.getY()] = qiZi;
             rounds++;
+        }else{
+            System.out.println("请输入(1,1)-(15,15)范围内的坐标");
         }
     }
 
     public  Boolean ifWin(){
-        boolean colsWcoln=false;
-        for(int row=0;row<scale_row;row++){
-            for (int col=0;col<scale_col;col++){
-
-            }
-        }
-        return true;
+        return left_right() | leftBottom_rightTop() | top_Bottom() | left_right();
     }
 
-    private Boolean IfWin(){
+    private Boolean leftBottom_rightTop(){
         int row=luozi_x;
         int col=luozi_y;
         int num_qizi=1;
-        while(num_qizi<5) {
+        System.out.println(row);
+        while(row>-1&&row<15&&col>-1&&col<15) {
             if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
-
                 break;
             } else {
                 num_qizi++;
             }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
             row++;
             col--;
         }
-        return true;
+        row=luozi_x;
+        col=luozi_y;
+        while (row>-1&&row<15&&col>-1&&col<15){
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            row--;
+            col++;
+        }
+        return num_qizi >= 5;
+    }
+
+    private Boolean leftTop_rightBottom(){
+        int row=luozi_x;
+        int col=luozi_y;
+        int num_qizi=1;
+        while(row>-1&&row<15&&col>-1&&col<15) {
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            row--;
+            col--;
+        }
+        row=luozi_x;
+        col=luozi_y;
+        while (row>-1&&row<15&&col>-1&&col<15){
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            row++;
+            col++;
+        }
+        return num_qizi >= 5;
+    }
+
+    private Boolean left_right(){
+        int row=luozi_x;
+        int col=luozi_y;
+        int num_qizi=0;
+        while(row>-1&&row<15&&col>-1&&col<15) {
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            row--;
+        }
+        row=luozi_x;
+        col=luozi_y;
+        while (row>-1&&row<15&&col>-1&&col<15){
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                System.out.println("row"+row);
+                System.out.println("col"+col);
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            row++;
+        }
+        return num_qizi >= 5;
+    }
+
+    private Boolean top_Bottom(){
+        int row=luozi_x;
+        int col=luozi_y;
+        int num_qizi=1;
+        while(row>-1&&row<15&&col>-1&&col<15) {
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4){
+                break;
+            }
+            col--;
+        }
+        row=luozi_x;
+        col=luozi_y;
+        while (row>-1&&row<15&&col>-1&&col<15){
+            if (qiZis[row][col].getColor() != qiZis[luozi_x][luozi_y].getColor()) {
+                break;
+            } else {
+                num_qizi++;
+            }
+            if (row>luozi_x+4||row<luozi_x-4||col>luozi_y+4||col<luozi_y-4) {
+                break;
+            }
+            col++;
+        }
+        return num_qizi >= 5;
     }
 }
