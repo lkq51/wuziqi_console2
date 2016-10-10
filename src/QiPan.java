@@ -6,7 +6,7 @@ public class QiPan {
     final static private int scale_col=15;//棋盘规格 列数
     static private int luozi_x;           //当前落子的位置 x行
     static private int luozi_y;           //当前落子的位置 y列
-    private int rounds=0;                 //当前的回合数=rounds/2+rounds%2
+    private int rounds;                 //当前的回合数=rounds/2+rounds%2
     private QiZi[][] qiZis=new QiZi[scale_col][scale_row];
 
 
@@ -28,6 +28,7 @@ public class QiPan {
 
     //初始化棋盘
     public void initialization(){
+        rounds=0;
         for (int i=0;i<scale_row;i++) {
             for (int j = 0; j < scale_col; j++) {
                 qiZis[i][j]=new QiZi(i,j);
@@ -39,10 +40,7 @@ public class QiPan {
     public void draw(){
         for(int i=0;i<scale_row;i++){
             for (int j=0;j<scale_col;j++){
-                if(qiZis[i][j].getColor()==-1)
-                    System.out.print(" * ");
-                else
-                    System.out.print(" "+qiZis[i][j].getColor()+" ");
+                System.out.print(" "+((qiZis[i][j].getColor()==-1)?"*":qiZis[i][j].getColor())+" ");
             }
             System.out.println("");
         }
@@ -50,11 +48,7 @@ public class QiPan {
     //提示轮到谁落子
     public void luoziTips(){
         System.out.println("0.代表白棋，1.代表黑棋. *代表空位");
-        if (rounds%2==0){
-            System.out.println("请黑棋选手落子,输入坐标(x,y)");
-        }else {
-            System.out.println("请白棋选手落子,输入坐标(x,y)");
-        }
+        System.out.println("请"+((rounds%2==0)?"白":"黑")+"棋选手落子,输入坐标(x,y)");
     }
     //放置棋子
     public void luoZi(){
@@ -70,7 +64,8 @@ public class QiPan {
                 }
                 rounds++;
             }else {
-                System.out.println("此处已有落子");
+                System.out.print("此处已有落子    ");
+                System.out.println("请"+((rounds%2==0)?"白":"黑")+"棋选手重新输入落子坐标");
             }
         }else{
             System.out.println("请输入(1,1)-(15,15)范围内的坐标");
@@ -78,7 +73,7 @@ public class QiPan {
     }
     //判断是否有人取胜
     public  Boolean ifWin(){
-         return left_right() | leftBottom_rightTop() | top_Bottom() | left_right();
+         return left_right() | leftBottom_rightTop() | leftTop_rightBottom() | top_Bottom() | left_right();
     }
     //判断左下到右上是否已连成五子
     private Boolean leftBottom_rightTop(){

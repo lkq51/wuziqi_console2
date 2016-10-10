@@ -25,6 +25,7 @@ public class Game {
         Boolean ifwin=false;
         qiPan.initialization();
         qiPan.draw();
+        qiPan.luoziTips();
         while (!ifwin){
             Scanner scanner=new Scanner(System.in);
             String  XY=scanner.nextLine();
